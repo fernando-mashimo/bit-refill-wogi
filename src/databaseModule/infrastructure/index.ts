@@ -18,7 +18,7 @@ export class DatabaseStack extends cdk.Stack {
   private createUsersTable(): dynamodb.Table {
     const usersTable = new dynamodb.Table(this, "UsersTable", {
       tableName: "Users",
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
       partitionKey: {
         name: "role",
         type: dynamodb.AttributeType.STRING,
@@ -49,7 +49,7 @@ export class DatabaseStack extends cdk.Stack {
   private createProductsTable(): dynamodb.Table {
     const productsTable = new dynamodb.Table(this, "ProductsTable", {
       tableName: "Products",
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
       partitionKey: {
         name: "pk",
         type: dynamodb.AttributeType.STRING,
@@ -91,7 +91,7 @@ export class DatabaseStack extends cdk.Stack {
   private createOrdersTable(): dynamodb.Table {
     const ordersTable = new dynamodb.Table(this, "OrdersTable", {
       tableName: "Orders",
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
       partitionKey: {
         name: "pk",
         type: dynamodb.AttributeType.STRING,
