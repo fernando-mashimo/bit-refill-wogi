@@ -17,9 +17,9 @@ export class CustomerData implements ICustomerRepository {
 
   public async getByEmail(email: string): Promise<User | null> {
     const params = {
-      TableName: process.env.USERS_TABLE_NAME, // TO DO: needs to be defined
+      TableName: process.env.USERS_TABLE_NAME,
       IndexName: "gsi-userEmail",
-      KeyConditionExpression: "userMail = :email AND sortingKey = :sortingKey",
+      KeyConditionExpression: "userEmail = :email AND sortingKey = :sortingKey",
       ExpressionAttributeValues: {
         ":email": email,
         ":sortingKey": EMPTY_DDB_ATTRIBUTE,
@@ -37,7 +37,7 @@ export class CustomerData implements ICustomerRepository {
 
   public async create(entity: User): Promise<void> {
     const params = {
-      TableName: process.env.USERS_TABLE_NAME, // TO DO: needs to be defined
+      TableName: process.env.USERS_TABLE_NAME,
       Item: this.entityToDDBItem(entity),
     };
 
@@ -62,7 +62,7 @@ export class CustomerData implements ICustomerRepository {
   private entityToDDBItem(entity: User): DDBItem {
     return {
       role: entity.role,
-      id: entity.email,
+      id: entity.id,
       userEmail: entity.email,
       sortingKey: EMPTY_DDB_ATTRIBUTE,
 
