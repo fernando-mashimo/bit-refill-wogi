@@ -3,10 +3,16 @@ import * as cdk from "aws-cdk-lib";
 import { DatabaseStack } from "../src/databaseModule/infrastructure";
 import { MainAppStack } from "../src/mainAppModule/infrastructure";
 import { ApiGatewayStack } from "../src/apiGatewayModule/infrasctructure";
+import { $config } from "../lib/config";
 
 const app = new cdk.App();
+const env: cdk.Environment = {
+  account: $config.AWS_ACCOUNT_ID,
+  region: $config.AWS_REGION,
+};
 
 const databaseStack = new DatabaseStack(app, "DatabaseStack", {
+  env,
   tags: {
     module: "databaseModule",
   },
@@ -14,6 +20,7 @@ const databaseStack = new DatabaseStack(app, "DatabaseStack", {
 });
 
 const mainAppStack = new MainAppStack(app, "MainAppStack", {
+  env,
   tags: {
     module: "mainAppModule",
   },
@@ -23,6 +30,7 @@ const mainAppStack = new MainAppStack(app, "MainAppStack", {
 mainAppStack.addDependency(databaseStack);
 
 const apiGatewayStack = new ApiGatewayStack(app, "ApiGatewayStack", {
+  env,
   tags: {
     module: "apiGatewayModule",
   },
