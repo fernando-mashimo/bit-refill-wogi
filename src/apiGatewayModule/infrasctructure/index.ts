@@ -50,6 +50,21 @@ export class ApiGatewayStack extends cdk.Stack {
       },
     });
 
+    const usagePlan = api.addUsagePlan(`${stackId}UsagePlan`, {
+      name: `${stackId}UsagePlan`,
+      throttle: {
+        rateLimit: 5, // requests per second
+        burstLimit: 10,
+      },
+      quota: {
+        limit: 1000, // requests per day
+        period: apiGateway.Period.DAY,
+      },
+    });
+    usagePlan.addApiStage({
+      stage: api.deploymentStage,
+    });
+
     return api;
   }
 
