@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { DatabaseStack } from "../src/databaseModule/infrastructure";
-import { MainAppStack } from "../src/mainAppModule/infrastructure";
-import { ApiGatewayStack } from "../src/apiGatewayModule/infrasctructure";
+import { BitrefillAppStack } from "../src/bitrefillAppModule/infrastructure";
+import { BitrefillApiGatewayStack } from "../src/bitrefillApiGatewayModule/infrasctructure";
 import { $config } from "../lib/config";
 
 const app = new cdk.App();
@@ -11,30 +10,24 @@ const env: cdk.Environment = {
   region: $config.AWS_REGION,
 };
 
-const databaseStack = new DatabaseStack(app, "DatabaseStack", {
+const bitrefillAppStack = new BitrefillAppStack(app, "BitrefillAppStack", {
   env,
   tags: {
-    module: "databaseModule",
-  },
-  description: "This stack creates the database resources for the application",
-});
-
-const mainAppStack = new MainAppStack(app, "MainAppStack", {
-  env,
-  tags: {
-    module: "mainAppModule",
+    module: "bitrefillAppModule",
   },
   description: "This stack creates the main application resources",
-  usersTable: databaseStack.usersTable,
 });
-mainAppStack.addDependency(databaseStack);
 
-const apiGatewayStack = new ApiGatewayStack(app, "ApiGatewayStack", {
-  env,
-  tags: {
-    module: "apiGatewayModule",
-  },
-  description: "This stack creates the API Gateway resources",
-  createCustomerFunction: mainAppStack.createCustomerFunction,
-});
-apiGatewayStack.addDependency(mainAppStack);
+const bilrefillApiGatewayStack = new BitrefillApiGatewayStack(
+  app,
+  "BitrefillApiGatewayStack",
+  {
+    env,
+    tags: {
+      module: "bitrefillApiGatewayModule",
+    },
+    description: "This stack creates the API Gateway resources",
+    getWogiProductsFunction: bitrefillAppStack.getWogiProductsFunction,
+  }
+);
+bilrefillApiGatewayStack.addDependency(bitrefillAppStack);
