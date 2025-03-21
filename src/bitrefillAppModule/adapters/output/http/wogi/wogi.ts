@@ -43,28 +43,24 @@ export class Wogi implements IWogi {
   ): Promise<WogiProductLines | undefined> {
     this.url.pathname = "/api/v1/product_lines";
 
-    const response = await fetch(this.url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${Buffer.from(`${userName}:${password}`).toString(
-          "base64"
-        )}`,
-      },
-    });
-
-    if (!response.ok) {
-      console.error(`Error: ${response.status} - ${response.statusText}`);
-      const text = await response.text();
-      throw new Error(`Failed to fetch product lines\n${text}`);
-    }
-
     try {
-      const data = await response.json();
+      const response = await fetch(this.url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Basic ${Buffer.from(
+            `${userName}:${password}`
+          ).toString("base64")}`,
+        },
+      });
+
+      await this.verifyErrorAndThrow(response);
+
+      const data: WogiProductLines = await response.json();
       return data;
     } catch (error) {
-      console.error("Failed to parse JSON:", error);
-      return undefined;
+      console.error("Cannot get product lines from Wogi API", error);
+      throw error;
     }
   }
 

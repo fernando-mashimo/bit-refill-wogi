@@ -18,7 +18,7 @@ const bitrefillAppStack = new BitrefillAppStack(app, "BitrefillAppStack", {
   description: "This stack creates the main application resources",
 });
 
-const bilrefillApiGatewayStack = new BitrefillApiGatewayStack(
+const bitrefillApiGatewayStack = new BitrefillApiGatewayStack(
   app,
   "BitrefillApiGatewayStack",
   {
@@ -28,6 +28,7 @@ const bilrefillApiGatewayStack = new BitrefillApiGatewayStack(
     },
     description: "This stack creates the API Gateway resources",
     getWogiProductsFunction: bitrefillAppStack.getWogiProductsFunction,
+    getWogiProductLinesFunction: bitrefillAppStack.getWogiProductLinesFunction,
   }
 );
-bilrefillApiGatewayStack.addDependency(bitrefillAppStack);
+bitrefillApiGatewayStack.addDependency(bitrefillAppStack);
